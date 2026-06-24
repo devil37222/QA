@@ -1,4 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from KinopoiskPage import KinopoiskPage
 import pytest
 import allure
@@ -21,6 +24,7 @@ def driver():
                     "корректность работы сайта 'hd.kinopoisk.ru'.")
 @allure.feature("КИНОПОИСК")
 @allure.severity(allure.severity_level.CRITICAL)
+@pytest.mark.ui
 def test_trailer(driver):
     """
     Тест проверяет функцию открытия трейлера фильма на полный экран.
@@ -32,8 +36,14 @@ def test_trailer(driver):
         page.open_film()
     with allure.step("Открытие трейлера фильма"):
         page.open_trailer()
-    with allure.step("Открытие фильма в полноэкранном режиме"):
+    with allure.step("Открытие трейлера в полноэкранном режиме"):
         page.open_maximize()
+    with allure.step("Проверка трейлера на открытие в полноэкранном режиме"):
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,
+                                            'button[aria-label="Выйти'
+                                            ' из полноэкраного режима"]')))
+        assert element is not None, "Элемент не найден на новой странице"
 
 
 def test_shop(driver):
@@ -48,6 +58,11 @@ def test_shop(driver):
         page.open_shop()
     with allure.step("Переход на следующий фильм"):
         page.scroll_film()
+    with allure.step("Проверка перехода на следующий фильм"):
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((
+                By.CSS_SELECTOR, 'a[aria-label="Наследник"]')))
+        assert element is not None, "Элемент не найден на новой странице"
 
 
 def test_favorite(driver):
@@ -61,6 +76,11 @@ def test_favorite(driver):
         page.open_film()
     with allure.step("Добавление фильма в избранное"):
         page.add_favourite()
+    with allure.step("Проверка на добавление фильма в избранное"):
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((
+                By.CSS_SELECTOR, 'input[data-testid="text-field-input"]')))
+        assert element is not None, "Элемент не найден на новой странице"
 
 
 def test_film(driver):
@@ -76,6 +96,11 @@ def test_film(driver):
         page.search(keyword)
     with allure.step("Открытие страницы фильма"):
         page.page_film()
+    with allure.step("Проверка на открытие страницы фильма"):
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((
+                By.CSS_SELECTOR, 'img[alt="Смотреть фильм Горничная, 2025"]')))
+        assert element is not None, "Элемент не найден на новой странице"
 
 
 def test_channels(driver):
@@ -94,3 +119,9 @@ def test_channels(driver):
         page.switch_sport()
     with allure.step("Переход к каналам раздела 'Детские'"):
         page.switch_kids()
+    with allure.step("Проверка на то,что последним "
+                     "разделом при переходе каналов является 'Детские'"):
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((
+                By.CSS_SELECTOR, 'div[aria-label="МУЛЬТ"]')))
+        assert element is not None, "Элемент не найден на новой странице"

@@ -1,6 +1,8 @@
+
 from ProjectsAPI import ProjectsAPI
 from config import API_KEY
 import allure
+import pytest
 
 api = ProjectsAPI(None, "https://kinopoiskapiunofficial.tech")
 
@@ -10,6 +12,7 @@ api = ProjectsAPI(None, "https://kinopoiskapiunofficial.tech")
                     "с различными операциями.")
 @allure.feature("Позитивные API-запросы")
 @allure.severity(allure.severity_level.CRITICAL)
+@pytest.mark.api
 def test_get_film():
     """
     Получение фильма по уникальному валидному id.

@@ -56,9 +56,8 @@ class ProjectsAPI:
             "Content-Type": "application/json",
             'X-API-KEY': API_KEY
         }
-        resp = requests.get(f'{self.url
-                               }/api/v1/api_keys/{apy_key
-                                                  }', headers=my_headers)
+        resp = requests.get(
+            f'{self.url}/api/v1/api_keys/{apy_key}', headers=my_headers)
         return resp
 
     @allure.step("Получение фильма с несуществующим {id}")
@@ -72,6 +71,6 @@ class ProjectsAPI:
             "Content-Type": "application/json",
             'X-API-KEY': API_KEY
         }
-        resp = requests.post(f'{self.url
-                                }/api/v2.2/films/{id}', headers=my_headers)
+        resp = requests.post(f'{self.url}/api/v2.2/films/{id}',
+                             headers=my_headers)
         return resp

@@ -1,1 +1,6 @@
-API_KEY = 'efa91f8a-d0eb-43d4-8552-393080824e1d'
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")

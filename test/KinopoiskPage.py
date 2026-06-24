@@ -93,6 +93,10 @@ class KinopoiskPage:
             EC.visibility_of_element_located(self.button_favourite))
         self.driver.find_element(*self.button_favourite).click()
 
+    def is_favorite(self):
+        WebDriverWait(self.driver, 5).until(
+            EC.visibility_of_element_located(self.favourite))
+
     @allure.step("Поиск фильма по ключевому слову {keyword}")
     def search(self, keyword):
         """
